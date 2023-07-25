@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+
+{% block title %}
+<title>
+    New Product
+</title>
+{% endblock%}
+
+{% block content %}
+
+<br/>
+<br/>
+
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'main:product_list' %}">Products</a></li>
+      <li class="breadcrumb-item active" aria-current="page">New</li>
+    </ol>
+  </nav>
+
+<br/>
+
+<form id ="myForm" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h1 class="h3 mb-3 fw-normal">Please Add New Product</h1>
+    {% comment %} <div class="form-floating"> {% endcomment %}
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">Product Type</span>
+        {% render_field form.product_type|add_class:"form-select" id="product_type" placeholder="Product Type" %}
+        {% comment %} <label for="product_type">Product Type</label> {% endcomment %}
+        <p class="text-danger">{{form.product_type.errors}}</p>
+      </div>
+      {% comment %} <div class="form-floating"> {% endcomment %}
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">Category</span>
+        {% render_field form.category|add_class:"form-select" id="category" placeholder="Category" %}
+        <span class="input-group-text"><a href="{% url 'main:category_new' %}" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Add</a></span>
+        <p class="text-danger">{{form.category.errors}}</p>
+      </div>
+      <div class="form-floating">
+        {% render_field form.title|add_class:"form-control" id="title" type="text" placeholder="Title" %}
+        <label for="floatingInput">Title</label>
+        <p class="text-danger">{{form.title.errors}}</p>
+      </div>
+      <div>
+        {{ form.description|add_label_class:"form-label" }}
+        {% render_field form.description|add_class:"form-control" rows="3" cols="20" id="description" placeholder="Product Description" %}
+        <p class="text-danger">{{form.description.errors}}</p>
+      </div>
+      <div class="mb-3">
+        <label for="image" class="form-label">Book Cover Image (PNG, JPEG)</label>
+        {% render_field form.image|add_class:"form-control" rows="20" cols="20" id="image" type="file" %}
+        <p id = "image-error" class="text-danger">{{form.image.errors}}</p>
+      </div>
+      <div class="mb-3">
+        <label for="file" class="form-label">Book/Other Files (PDF, Docx, Etc)</label>
+        {% render_field form.file|add_class:"form-control" rows="20" cols="20" id="file" type="file" %}
+        <p id = "file-error" class="text-danger">{{form.file.errors}}</p>
+      </div>
+      <div class="">
+        <label for="link" class="form-label">URL Link (www..)</label>
+        {% render_field form.link|add_class:"form-control" rows="20" cols="20" id="link" placeholder="www..." %}
+        <p id = "file-error" class="text-danger">{{form.link.errors}}</p>
+      </div>
+
+      <br/>
+
+      <button onClick={} class="btn btn-primary w-100 py-2" type="submit">Add Item</button>
+    {% comment %} {{form.as_p}} {% endcomment %}
+</form>
+
+<script>
+    document.getElementById("myForm").addEventListener("submit",function(event){
+        var type = document.querySelector('select[name="product_type"]').value;
+        if(type == "BOOKS"){
+            // window.alert("BOOKS")
+            var imageInput = document.getElementById('image');
+            var fileInput = document.getElementById('file');
+            var image = imageInput.files[0];
+            var file = fileInput.files[0];
+
+            if (!image) {
+                document.getElementById("image-error").innerHTML = "Please Select An Image";
+                return event.preventDefault();  // Prevent form submission
+            }else{
+                document.getElementById("image-error").innerHTML = "";
+            }
+
+            if (image && image.size > 1024 * 10) {
+                document.getElementById("image-error").innerHTML = "Selected Image Is Too Big";
+                return event.preventDefault();  // Prevent form submission
+            }else{
+                document.getElementById("image-error").innerHTML = "";
+            }
+
+            if (!file) {
+                document.getElementById("file-error").innerHTML = "Please Select A File";
+                return event.preventDefault();  // Prevent form submission
+            }else{
+                document.getElementById("file-error").innerHTML = "";
+            }
+
+            if (file && file.size > 1024 * 1024) {
+                document.getElementById("file-error").innerHTML = "Selected File Is Too Big";
+                return event.preventDefault();  // Prevent form submission
+            }else{
+                document.getElementById("file-error").innerHTML = "";
+            }
+
+        }
+
+        if(type == "FILES"){
+            // window.alert("FILES")
+            var fileInput = document.getElementById('file');
+            var file = fileInput.files[0];
+
+            if (!file) {
+                document.getElementById("file-error").innerHTML = "Please Select A File";
+                return event.preventDefault();  // Prevent form submission
+            }else{
+                document.getElementById("file-error").innerHTML = "";
+            }
+
+            if (file && file.size > 1024 * 1024) {
+                document.getElementById("file-error").innerHTML = "Selected File Is Too Big";
+                return event.preventDefault();  // Prevent form submission
+            }else{
+                document.getElementById("file-error").innerHTML = "";
+            }
+        }
+
+        if(type == "WEB LINKS"){
+           // window.alert("WEB LINKS")
+            var link = document.querySelector('input[name="link"]').value;
+            if(link.trim().length < 3){
+                document.getElementById("file-error").innerHTML = "Please Provide A Valid Link";
+                return event.preventDefault();  // Prevent form submission
+            }else{
+                document.getElementById("link-error").innerHTML = "";
+            }
+
+        }
+
+
+       // event.preventDefault();  // Prevent form submission
+    })
+
+    {% comment %} function checkType(){
+        window.alert("Here")
+        return;
+    } {% endcomment %}
+</script>
+ 
+
+{% endblock%}
+

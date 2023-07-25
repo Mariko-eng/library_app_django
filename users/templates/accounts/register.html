@@ -1,0 +1,107 @@
+
+{%extends 'base_auth.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block title %}
+<title>
+    Register
+</title>
+{% endblock%}
+
+{% block other_styles %}
+<style>
+html,
+body {
+  height: 100%;
+}
+
+.form-signin {
+  max-width: 430px;
+  padding: 1rem;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+</style>
+{% endblock%}
+
+{% block content %}
+
+<form method="post" action="">
+  {% csrf_token %}
+  <img class="mb-4" src="{% static 'brand/bootstrap-logo.svg'%}" alt="" width="72" height="57">
+  <h1 class="h3 mb-3 fw-normal">Please Create Account</h1>
+    <div class="form-floating">
+      {% render_field form.email|add_class:"form-control" id="email" type="email" placeholder="Email" %}
+      <label for="floatingInput">Email address</label>
+      <p class="text-danger">{{form.email.errors}}</p>
+    </div>
+
+    <div class="form-floating">
+      {% render_field form.first_name|add_class:"form-control" id="first_name" type="text" placeholder="First Name" %}
+      <label for="first_name">First Name</label>
+      <p class="text-danger">{{form.first_name.errors}}</p>
+    </div>
+
+    <div class="form-floating">
+      {% render_field form.last_name|add_class:"form-control" id="last_name" type="text" placeholder="Last Name" %}
+      <label for="last_name">Last Name</label>
+      <p class="text-danger">{{form.last_name.errors}}</p>
+    </div>
+
+    <div class="form-floating">
+      {% render_field form.phone_number|add_class:"form-control" id="phone_number" type="text" placeholder="Phone Number" %}
+      <label for="phone_number">Phone Number</label>
+      <p class="text-danger">{{form.phone_number.errors}}</p>
+    </div>
+
+    <div class="form-floating">
+      {% render_field form.gender|add_class:"form-select" id="gender" placeholder="Gender" %}
+      <label for="gender">Gender</label>
+      <p class="text-danger">{{form.gender.errors}}</p>
+    </div>
+
+    <div class="form-floating">
+      {% render_field form.password1|add_class:"form-control" id="password1" type="password" placeholder="Password" %}
+      <label for="password1">Enter Password</label>
+      <p class="text-danger">{{form.password1.errors}}</p>
+    </div>
+
+    <div class="form-floating">
+      {% render_field form.password2|add_class:"form-control" id="password2" type="password" placeholder="Confirm Password" %}
+      <label for="password2">Confirm Password</label>
+      <p class="text-danger">{{form.password2.errors}}</p>
+    </div>
+
+  {% comment %} {{ form.errors }} {% endcomment %}
+
+  {% comment %} {{form.as_p}} {% endcomment %}
+
+  <button class="btn btn-primary w-100 py-2" type="submit">Create Account</button>
+  <p class="mt-2 mb-2 text-body-secondary">&copy; 2017–2023</p>
+
+</form>
+
+<div>
+  <a href="{% url 'users:login' %}">Login</a>
+</div>
+ 
+
+{% endblock%}
+
+

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+
+{% block title %}
+<title>
+    New Category
+</title>
+{% endblock%}
+
+{% block content %}
+<br/>
+<br/>
+
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+  <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'main:category_list' %}">Categories</a></li>
+          <li class="breadcrumb-item active" aria-current="page">New</li>
+     </ol>
+</nav>
+
+
+<br/>
+<br/>
+
+<form method="post">
+    {% csrf_token %}
+    <h1 class="h3 mb-3 fw-normal">Please Add New Category</h1>
+      <div class="form-floating">
+        {% render_field form.title|add_class:"form-control" id="title" type="text" placeholder="Title" %}
+        <label for="floatingInput">Title</label>
+        <p class="text-danger">{{form.title.errors}}</p>
+      </div>
+    <button class="btn btn-primary w-100 py-2" type="submit">Add Category</button>
+</form>
+ 
+
+{% endblock%}
+
