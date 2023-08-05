@@ -6,6 +6,7 @@ from . import views
 app_name = 'users'
 
 urlpatterns = [
+    path('',views.index),
     path('users/login',views.index, name="login"),
     path('users/register',views.registerView, name="register"),
     path('users/logout',views.logoutView, name="logout"),
@@ -24,6 +25,12 @@ urlpatterns = [
          name="password_reset_confirm"), # Link to Password Reset ConfirmmView
     path('users/reset_password/complete/',
          auth_views.PasswordResetCompleteView.as_view(template_name ="accounts/password_reset_done.html"),name="password_reset_complete"), # Password Successfully Changed Message
+     
+
+     ### USERS
+    path('users/list/',views.users_list_view,name="user_list"),
+    path('users/new/',views.users_new_view,name="user_new"),
+
 ]
 
 

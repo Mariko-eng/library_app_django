@@ -88,18 +88,20 @@ class UserManager(BaseUserManager):
     extra_fields.setdefault('is_active', True)  # Set is_active to False by default
     extra_fields.setdefault('is_staff', True)
     extra_fields.setdefault('is_superuser', True)
+    extra_fields.setdefault('user_type', 'ADMIN')
     user=self._create_user(email,password,**extra_fields)
     return user
 
 
 class User(AbstractUser):
-    USER_TYPE_CHOICES = (("ADMIN", "ADMIN"),("TEACHER", "TEACHER"),("STUDENT", "STUDENT"))
+    USER_TYPE_CHOICES = (("ADMIN", "ADMIN"),("STAFF", "STAFF"),("STUDENT", "STUDENT"))
     GENDER_CHOICES = [("M", "Male"), ("F", "Female")]
 
     username = None
     email = models.EmailField(max_length=254, unique=True)
-    user_type = models.CharField(max_length=100, default="ADMIN",choices=USER_TYPE_CHOICES)
+    user_type = models.CharField(max_length=100,choices=USER_TYPE_CHOICES)
     role_code = models.CharField(max_length=100,default=UserRole.ADMINISTRATOR)
+    school_id = models.CharField(max_length=225,null=True,blank=True) # Staff ID OR Student ID
     national_id = models.CharField(max_length=225,null=True,blank=True)
     profile_pic = models.ImageField(upload_to="profile_pic",null=True)
     otp_secret = models.CharField(max_length=100, default=pyotp.random_base32)
@@ -120,9 +122,21 @@ class User(AbstractUser):
 
     objects = UserManager()
 
+    class Meta:
+        ordering = ('-created_at',)
+
     def get_absolute_url(self):
         return "/users/%i/" % (self.pk)
 
     @property
-    def name(self) -> str:
+    def name(self):
         return self.get_full_name()
+
+class Attendance(models.Model):
+    user = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
+    item = models.CharField(max_length=225,null=True,blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True) 
+
+    class Meta:
+        ordering = ('-created_at',)

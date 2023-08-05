@@ -233,11 +233,9 @@
                                 <a class="nav-link text-success" href="{% url 'main:category_list' %}?title={{category.title}}">{{ category.title }}</a>
                             </li>
                             {% endfor %}
-                            {% if request.user.user_type == "ADMIN" %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'main:category_new' %}">Add</a>
                             </li>
-                            {% endif %}
                         </ul>
                     </div>
                 </li>
@@ -277,11 +275,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'main:product_list' %}">List</a>
                         </li>
-                        {% if request.user.user_type == "ADMIN" %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'main:product_new' %}">Add</a>
                         </li>
-                        {% endif %}
                     </ul>
                 </div>
             </li>
@@ -292,7 +288,7 @@
                 </a>
             </li>
             <li>
-                <a href="{% url 'users:user_list' %}" class="nav-link link-body-emphasis">
+                <a href="#" class="nav-link link-body-emphasis">
                     <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
                     Users
                 </a>

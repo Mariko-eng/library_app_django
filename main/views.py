@@ -24,7 +24,7 @@ def category_list_view(request):
     category_title = request.GET.get('title', None)
 
     selected_category = Category.objects.filter(title=category_title).first()
-    print(selected_category)
+    # print(selected_category)
 
     selected_products = Product.objects.filter(category=selected_category)
 

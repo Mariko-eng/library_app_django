@@ -63,9 +63,14 @@ body {
     </label>
   </div>
 
-  {% for message in messages %}
-  <p style="color:red" >{{message}}</p>
-  {% endfor %}
+  {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-success" role="alert">
+     {{ message }}
+    </div>
+    {% endfor %}
+{% endif %}
+
 
   {% comment %} <input type= "submit" name="Login"/> {% endcomment %}
   <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>

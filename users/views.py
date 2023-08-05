@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import Group
-from .forms import CreateUserForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from.decorators import unauthenticated_user,allowed_users
-from django.core.mail import send_mail,EmailMessage
+from django.core.mail import send_mail
+from .models import User
+from .forms import CreateUserForm,NewUserForm
 
 
 # @unauthenticated_user
@@ -50,17 +51,77 @@ def registerView(request):
             else:
                 group = Group.objects.create(name="student")
 
+            # user.is_active = False
             user.groups.add(group)
-            user.is_active = False
+            user.user_type = "STUDENT"
             user.save()
 
             user_email = form.cleaned_data.get("email")
             messages.success(request,"Account Has Been Created For " + user_email)
-            return redirect('login')
+            return redirect('users:login')
         
     context = {'form': form}
 
     return render(request,'accounts/register.html',context)
+
+@login_required(login_url='users/login')
+@allowed_users(allowed_roles=["admin",'staff'])
+def users_list_view(request):
+    users = User.objects.all()
+        
+    context = {"users":users,}
+
+    return render(request,'accounts/users_list.html',context)
+
+@login_required(login_url='users/login')
+@allowed_users(allowed_roles=["admin"])
+def users_new_view(request):
+    form = NewUserForm()
+
+    if request.method == "POST":
+        form = NewUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+
+            if Group.objects.filter(name=user.user_type.lower()).exists():
+                group = Group.objects.filter(name=user.user_type.lower()).first()
+            else:
+                group = Group.objects.create(name=user.user_type.lower())
+
+            # user.is_active = False
+            user.groups.add(group)
+            user.set_password(str(user.email))
+            user.save()
+
+            user_email = form.cleaned_data.get("email")
+            messages.success(request,"Account Has Been Created For " + user_email)
+            return redirect('users:user_list')
+        
+    context = {'form': form}
+
+    return render(request,'accounts/users_new.html',context)
+
+# @login_required(login_url='login')
+# def user_create_view(request):
+#     categories = User.objects.all()
+#     form = CategoryForm()
+
+#     if request.method == "POST":
+#         form = CategoryForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             category = form.cleaned_data['title']
+#             messages.success(request, category + " Has Been Added ")
+#             return redirect('main:category_list')
+#         else:
+#             messages.error(request,"Failed To Create Category")
+        
+#     context = {
+#         "categories":categories,
+#         'form': form
+#         }
+
+#     return render(request,'main/category_new.html',context)
 
 def send_mail_now(request):
     send_mail(

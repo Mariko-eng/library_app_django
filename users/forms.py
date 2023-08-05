@@ -6,30 +6,23 @@ from .models import User
 class CreateUserForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['email',
-                  'first_name',
-                  'last_name',
-                  'phone_number',
-                  'gender',
-                  'password1',
-                  'password2'
-                  ]
-        
-        # widgets = {
-        #     'first_name': TextInput(attrs={
-        #         'class': "form-control",
-        #         'style': 'max-width: 300px;',
-        #         'placeholder': 'Name'
-        #         }),
-        #     'last_name': TextInput(attrs={
-        #         'class': "form-control",
-        #         'style': 'max-width: 300px;',
-        #         'placeholder': 'Name'
-        #         }),
-        #     'email': EmailInput(attrs={
-        #         'class': "form-control", 
-        #         'style': 'max-width: 300px;',
-        #         'placeholder': 'Email'
-        #         })
-        # }
+        fields = [
+            'first_name',
+            'last_name',
+            'phone_number',
+            'gender',
+            'school_id',
+            'email',
+            'password1',
+            'password2'
+            ]
+
+class NewUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            'user_type','email',
+            'first_name','last_name',
+            'phone_number','gender',
+            'school_id']
 

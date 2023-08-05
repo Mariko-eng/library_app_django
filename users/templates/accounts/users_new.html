@@ -1,0 +1,90 @@
+{%extends 'base_main.html' %} 
+{% load widget_tweaks %}
+
+{% block title %}
+<title>Users</title>
+{% endblock%} 
+
+{% block content %}
+
+<br/>
+<br/> 
+
+<nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item">
+      <a href="{% url 'users:user_list' %}">Users</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">List</li>
+    <li class="breadcrumb-item">
+      <a href="{% url 'users:user_new' %}">NEW</a>
+    </li>
+  </ol>
+</nav>
+
+<br/>
+
+<form id ="myForm" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h1 class="h3 mb-3 fw-normal">Add A New User</h1>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon1">User Role</span>
+      {% render_field form.user_type|add_class:"form-select" id="user_type" placeholder="User Role" %}
+      {% for error in form.user_type.errors %}
+      <p class="text-danger">{{error}}</p>
+    {% endfor %}
+    </div>
+  <div class="form-floating mb-3">
+    {% render_field form.first_name|add_class:"form-control"|attr:"required" id="first_name" type="text" placeholder="First Name" %}
+    <label for="first_name">First Name</label>
+    {% for error in form.first_name.errors %}
+      <p class="text-danger">{{error}}</p>
+    {% endfor %}
+  </div>
+  <div class="form-floating mb-3">
+    {% render_field form.last_name|add_class:"form-control"|attr:"required" id="last_name" type="text" placeholder="Last Name" %}
+    <label for="last_name">Last Name</label>
+    {% for error in form.last_name.errors %}
+      <p class="text-danger">{{error}}</p>
+    {% endfor %}
+  </div>
+  <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon1">Gender</span>
+      {% render_field form.gender|add_class:"form-select" id="gender" placeholder="Gender" %}
+      {% for error in form.gender.errors %}
+      <p class="text-danger">{{error}}</p>
+    {% endfor %}
+  </div>
+
+  <div class="form-floating mb-3">
+    {% render_field form.phone_number|add_class:"form-control" id="phone_number"type="text" placeholder="Phone Number" %}
+    <label for="phone_number">Phone Number</label>
+    {% for error in form.phone_number.errors %}
+      <p class="text-danger">{{error}}</p>
+    {% endfor %}
+  </div>
+
+  <div class="form-floating mb-3">
+    {% render_field form.school_id|add_class:"form-control"|attr:"required" id="school_id" type="text" placeholder="School ID" %}
+    <label for="school_id">School ID</label>
+    {% for error in form.school_id.errors %}
+      <p class="text-danger">{{error}}</p>
+    {% endfor %}
+  </div>
+
+  <div class="form-floating mb-3">
+    {% render_field form.email|add_class:"form-control" id="email" type="email" placeholder="Email" %}
+    <label for="email">Email address</label>
+    {% for error in form.email.errors %}
+          <p class="text-danger">{{error}}</p>
+    {% endfor %}
+  </div>
+
+  <br/>
+
+  <button onClick={} class="btn btn-primary w-100 py-2" type="submit">Create Account</button>
+</form>
+
+{% endblock%}
+

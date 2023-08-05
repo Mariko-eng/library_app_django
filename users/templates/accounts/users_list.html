@@ -1,0 +1,81 @@
+{%extends 'base_main.html' %} 
+
+{% block title %}
+<title>Users</title>
+{% endblock%} 
+
+{% block other_styles %}     
+{% endblock %}
+
+{% block content %}
+<br />
+<br />
+
+<nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Home</a></li>
+    <li class="breadcrumb-item">
+      <a href="{% url 'users:user_list' %}">Users</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+            <a href="{% url 'users:user_list' %}">LIST</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="{% url 'users:user_new' %}">NEW</a>
+    </li>
+  </ol>
+</nav>
+
+<br />
+<br />
+{% if messages %} 
+{% for message in messages %}
+  <div class="alert alert-success" role="alert">{{ message }}</div>
+ {% endfor %} 
+ {% endif %}
+
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <div></div>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group me-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+          </div>
+        </div>
+      </div>
+
+      <h2>All Users</h2>
+      <div class="table-responsive small">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Names</th>
+              <th scope="col">Email</th>
+              <th scope="col">Role</th>
+              <th scope="col">Status</th>
+              <th scope="col">Created At</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in users %}
+             <tr>
+              <td>{{user.id}}</td>
+              <td>{{user.name}}</td>
+              <td>{{user.email}}</td>
+              <td>{{user.user_type}}</td>
+              {% if user.is_active %}
+                  <td class="text-success">ACTIVE</td>
+              {% else %}
+                  <td class="text-danger">NOT ACTIVE</td>
+              {% endif %}
+              <td>{{user.created_at}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+<br />
+
+{% endblock%}
