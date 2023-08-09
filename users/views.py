@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
 from django.contrib.auth.models import Group
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from.decorators import unauthenticated_user,allowed_users
 from django.core.mail import send_mail
-from .models import User
+from .models import User,Attendance
 from .forms import CreateUserForm,NewUserForm
+from django.core import serializers
 
 
 # @unauthenticated_user
@@ -100,6 +102,54 @@ def users_new_view(request):
     context = {'form': form}
 
     return render(request,'accounts/users_new.html',context)
+
+
+@login_required(login_url='users/login')
+@allowed_users(allowed_roles=["admin",'staff'])
+def attendance_list_view(request):
+    results = Attendance.objects.all()
+        
+    context = {"results":results}
+
+    return render(request,'attendance/index.html',context)
+
+def users_search(request):
+    name = request.GET.get("name", None)
+    print(name)
+    
+    results = User.objects.filter(first_name__icontains=name)
+
+    results_data = [{
+        'id': result.id,
+        'name': result.name,
+        'email': result.email,
+        'user_type': result.user_type,
+        'is_active': result.is_active,
+        'created_at': result.created_at,
+        } for result in results]
+        
+    return JsonResponse({'results': results_data})
+
+def attendance_search(request):
+    device = request.GET.get("device", None)
+    print(device)
+    
+    results = Attendance.objects.all()
+
+    results_data = [{
+        'id': result.id,
+        'user': {
+            'id': result.user.id,
+            'name': result.user.name,
+            'email': result.user.email,
+        },
+        'attendance_type': result.attendance_type,
+        'activity': result.activity,
+        'created_at': result.created_at,
+        } for result in results]
+        
+    return JsonResponse({'results': results_data})
+
 
 # @login_required(login_url='login')
 # def user_create_view(request):

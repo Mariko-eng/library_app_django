@@ -16,8 +16,10 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG")
 
 ALLOWED_HOSTS = [
-    "localhost", "127.0.0.1",
+    "localhost", "127.0.0.1", '192.168.1.100'
 ]
+
+# python manage.py runserver 192.168.1.100:8000
 
 CORS_ALLOWED_ORIGINS = [
     # "http://localhost:8000", 
@@ -141,7 +143,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,'bootstrap_assets')
+    os.path.join(BASE_DIR,'bootstrap_assets'),
+    os.path.join(BASE_DIR,'custom_assets')
 ] # DIRECTORIES WHERE YOU PUT YOUR STATIC FILES
 STATIC_ROOT = os.path.join(BASE_DIR,'assets') # WHERE WE WANT DJANGO STORE ALL STATIC FILES by running cmd collectstatic
 

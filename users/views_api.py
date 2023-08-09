@@ -15,7 +15,7 @@ from rest_framework.generics import DestroyAPIView
 from io import BytesIO
 from django.core.mail import send_mail,EmailMessage
 from .models import User, Attendance
-from .serializers import UserSerializer,AttendanceSerializer
+from .serializers import UserSerializer,AddAttendanceSerializer,AttendanceSerializer
 
 ####### Aaccess ####### 
 class LoginTokenObtainView(TokenObtainPairView):
@@ -32,15 +32,27 @@ class LoginTokenObtainView(TokenObtainPairView):
         tokens = serializer.validated_data
 
         # Serialize the user object
+        # Serialize the user object
         user_serializer = UserSerializer(user)
 
-        # Create the response data
+        access_token = tokens.get('access')
+        refresh_token = tokens.get('refresh')
+
         response_data = {
-            'tokens': tokens,
+           'access_token': {
+              "createdAt" :RefreshToken(refresh_token).payload['iat'], 
+               "expiresIn": RefreshToken(refresh_token).payload['exp'],
+               "token": access_token
+            },
+            'refresh_token': {
+               "createdAt" :RefreshToken(refresh_token).payload['iat'], 
+               "expiresIn": RefreshToken(refresh_token).payload['exp'],
+               "token": refresh_token
+            },
             'user': user_serializer.data
         }
 
-        return Response(response_data,status=status.HTTP_200_OK)
+        return Response(response_data)
 
 
 class LoginTokenRefreshView(TokenRefreshView):
@@ -55,13 +67,22 @@ class LoginTokenRefreshView(TokenRefreshView):
             error_message = "Token is invalid or expired"
             return Response({"message": error_message}, status=status.HTTP_400_BAD_REQUEST)
 
-        # user = serializer.user TokenRefreshSerializer -> Has no attribute user
-        
         tokens = serializer.validated_data
 
-        # Create the response data
+        access_token = tokens.get('access')
+        refresh_token = tokens.get('refresh')
+
         response_data = {
-            'tokens': tokens, 
+           'access_token': {
+              "createdAt" :RefreshToken(refresh_token).payload['iat'], 
+               "expiresIn": RefreshToken(refresh_token).payload['exp'],
+               "token": access_token
+            },
+            'refresh_token': {
+               "createdAt" :RefreshToken(refresh_token).payload['iat'], 
+               "expiresIn": RefreshToken(refresh_token).payload['exp'],
+               "token": refresh_token
+            },
         }
 
         return Response(response_data)
@@ -79,7 +100,22 @@ class BlackListTokenView(APIView):
         except Exception as e:
             return Response({"message": e},status=status.HTTP_400_BAD_REQUEST)
 
-class AttendanceListCreateAPIView(ListCreateAPIView):
+class LoggedInUserView(APIView):
+    
+    def get(self,request):
+        try:
+            user = request.user
+            serialier_class = UserSerializer(user)
+            return Response(serialier_class.data)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class AttendanceCreateAPIView(CreateAPIView):
+    queryset = Attendance.objects.all()
+    serializer_class = AddAttendanceSerializer
+
+
+class AttendanceListAPIView(ListAPIView):
     queryset = Attendance.objects.all()
     serializer_class = AttendanceSerializer
 

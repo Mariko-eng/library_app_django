@@ -34,13 +34,21 @@
  {% endfor %} 
  {% endif %}
 
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
         <div></div>
+
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group me-2">
             <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
             <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
           </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <div class="input-group mr-2">
+          <input type="search" id="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+          <button type="button" class="btn btn-outline-primary">search</button>
         </div>
       </div>
 
@@ -57,7 +65,7 @@
               <th scope="col">Created At</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="tableBody">
             {% for user in users %}
              <tr>
               <td>{{user.id}}</td>
@@ -77,5 +85,50 @@
       </div>
 
 <br />
+
+<script>
+  $(document).ready(function(){
+
+    $('#search').keyup(function() {
+        var tableBody = $('#tableBody');
+        var defaultTableContent = tableBody.html();
+
+        var inputValue = $(this).val().trim();
+
+        // console.log("inputValue ",inputValue)
+      
+      if (inputValue === '') {
+        tableBody.html(defaultTableContent);
+      } else {
+          console.log('Key pressed:', inputValue);
+          // Do something with the inputValue
+
+          $.get(`search/?name=${inputValue}`, function(data, status){
+            // console.log(data)
+            // console.log(status)
+            var users = data.results;
+
+             var tableContent = '';
+
+            for (var i = 0; i < users.length; i++) {
+                var user = users[i];
+                var statusClass = user.is_active ? 'text-success' : 'text-danger';
+
+                tableContent += `
+                <tr>
+                  <td>${user.id}</td>
+                  <td>${user.name}</td>
+                  <td>${user.email}</td>
+                  <td>${user.user_type}</td>
+                  <td class="${statusClass}">${user.is_active ? 'ACTIVE' : 'NOT ACTIVE'}</td>
+                  <td>${user.created_at}</td>
+                </tr>`;
+            }
+            tableBody.html(tableContent);
+          });
+        }
+    });
+  });
+</script>
 
 {% endblock%}

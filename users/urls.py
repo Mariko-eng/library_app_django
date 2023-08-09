@@ -28,9 +28,13 @@ urlpatterns = [
      
 
      ### USERS
-    path('users/list/',views.users_list_view,name="user_list"),
-    path('users/new/',views.users_new_view,name="user_new"),
+     path('users/list/',views.users_list_view,name="user_list"),
+     path('users/new/',views.users_new_view,name="user_new"),
+     path('users/list/search/',views.users_search,name="user_list_search"),
 
+         ### USERS
+     path('users/attendance/list/',views.attendance_list_view,name="attendance_list"),
+     path('users/attendance/list/search/',views.attendance_search,name="attendance_list_search"),
 ]
 
 

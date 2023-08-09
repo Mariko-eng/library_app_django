@@ -132,9 +132,17 @@ class User(AbstractUser):
     def name(self):
         return self.get_full_name()
 
+class Device(models.Model):
+    name = models.CharField(max_length=225)
+    address = models.CharField(max_length=225,null=True,blank=True)
+
 class Attendance(models.Model):
+    CHOICES = [("CHECK IN", "CHECK IN"), ("CHECK OUT", "CHECK OUT")]
+
     user = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
-    item = models.CharField(max_length=225,null=True,blank=True)
+    device = models.ForeignKey(Device,on_delete=models.SET_NULL,null=True)
+    attendance_type = models.CharField(max_length=100,default="CHECK IN",choices=CHOICES)
+    activity = models.CharField(max_length=225,null=True,blank=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True) 
 
