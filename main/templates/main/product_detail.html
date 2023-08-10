@@ -1,0 +1,59 @@
+{%extends 'base/main/base.html' %}
+
+{% block title %}
+<title>
+    Product
+</title>
+{% endblock%}
+
+{% block content %}
+
+<br/>
+<br/>
+
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+     <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'main:product_list' %}">Products</a></li>
+     </ol>
+</nav>
+
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-success" role="alert">
+     {{ message }}
+    </div>
+    {% comment %} <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li> {% endcomment %}
+    {% endfor %}
+{% endif %}
+
+<div class="album py-3 bg-body-tertiary">
+     <div class="container">
+        <div class="album py-2">{{ product.title}}</div>
+        <div class="album py-2">{{ product.description}}</div>
+
+        {% if product.image %}
+            <div style="height:100%;width:100%;height:225px;" class = "d-flex justify-content-start align-items-center">
+                <img src="{{product.image.url}}" class="img-fluid rounded-start pr-1" alt="...">
+            </div>
+            {% endif %}
+
+        {% if product.product_type == 'FILES' or product.product_type == 'BOOKS' %}
+            <a href="{{ request.scheme }}://{{ request.get_host }}{{ product.file.url }}">
+                Click here to access the file
+            </a>
+        {% endif %}
+
+        {% if product.product_type == 'WEB LINKS' %}
+            <a href="{{ product.link }}" target="_blank">
+                Click here to fo the webisite
+            </a>
+        {% endif %}
+        
+     </div>
+ </div>
+
+<br/>
+
+{% endblock%}
+

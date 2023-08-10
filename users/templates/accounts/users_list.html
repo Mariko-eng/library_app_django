@@ -1,4 +1,4 @@
-{%extends 'base_main.html' %} 
+{%extends 'base/main/base.html' %}
 
 {% block title %}
 <title>Users</title>
@@ -20,13 +20,12 @@
     <li class="breadcrumb-item active" aria-current="page">
             <a href="{% url 'users:user_list' %}">LIST</a>
     </li>
-    <li class="breadcrumb-item">
+    {% comment %} <li class="breadcrumb-item">
       <a href="{% url 'users:user_new' %}">NEW</a>
-    </li>
+    </li> {% endcomment %}
   </ol>
 </nav>
 
-<br />
 <br />
 {% if messages %} 
 {% for message in messages %}
@@ -34,41 +33,36 @@
  {% endfor %} 
  {% endif %}
 
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-        <div></div>
-
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group me-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      {% comment %} <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <div class="input-group mr-2">
           <input type="search" id="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
           <button type="button" class="btn btn-outline-primary">search</button>
         </div>
-      </div>
+      </div> {% endcomment %}
 
-      <h2>All Users</h2>
-      <div class="table-responsive small">
-        <table class="table table-striped table-sm">
+      {% comment %} <h2>All Users</h2> {% endcomment %}
+      <a class="btn btn-primary" href="{% url 'users:user_new' %}" role="button">Add New User</a>
+      
+      <br/>
+
+      <div class="table-responsive small mt-2">
+        <table id="bootstrapdatatable" class="table table-striped table-sm">
           <thead>
             <tr>
-              <th scope="col">#</th>
+              <th scope="col"><input type="checkbox" id="checkall"/></th>
               <th scope="col">Names</th>
               <th scope="col">Email</th>
               <th scope="col">Role</th>
               <th scope="col">Status</th>
               <th scope="col">Created At</th>
+              <th scope="col">Edit</th>
+              <th scope="col">Delete</th>
             </tr>
           </thead>
           <tbody id="tableBody">
             {% for user in users %}
              <tr>
-              <td>{{user.id}}</td>
+              <td><input type="checkbox" id="checkthis"/></th>
               <td>{{user.name}}</td>
               <td>{{user.email}}</td>
               <td>{{user.user_type}}</td>
@@ -78,6 +72,16 @@
                   <td class="text-danger">NOT ACTIVE</td>
               {% endif %}
               <td>{{user.created_at}}</td>
+              <td>
+                <a class="btn btn-primary" href="#" role="button">Edit</a>
+              </td>
+              <td>
+                <a class="btn btn-outline-danger" 
+                href="#" role="button"
+                {% comment %} onclick="myFunction()" {% endcomment %}
+                onclick="deleteUser('{{ user.id }}')"
+                >Delete</a>
+              </td> 
             </tr>
             {% endfor %}
           </tbody>
@@ -85,6 +89,51 @@
       </div>
 
 <br />
+
+<script>
+{% comment %} function myFunction() {
+  let text;
+  if (confirm("Press a button!") == true) {
+    text = "You pressed OK!";
+  } else {
+    text = "You canceled!";
+  }
+  document.getElementById("demo").innerHTML = text;
+} {% endcomment %}
+
+function getCookie(name) {
+    const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+    return cookieValue ? cookieValue.pop() : '';
+}
+
+function deleteUser(userId) {
+  
+    if (confirm("Are you sure you want to delete this user?")) {
+        $.ajax({
+            url: '/users/delete/' + userId, // Replace with the actual delete URL
+            type: 'DELETE',
+            beforeSend: function(xhr) {
+              xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+            },
+            success: function(response) {
+              location.reload()
+                // Assuming your server returns a success message
+                //if (response.success) {
+                // Remove the corresponding table row
+                //    $('.checkthis[data-id="' + userId + '"]').closest('tr').remove();
+                //} else {
+                //    alert("Failed to delete user.");
+                //} 
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                alert("An error occurred while deleting user.");
+            }
+        });
+    }
+}
+
+</script>
 
 <script>
   $(document).ready(function(){

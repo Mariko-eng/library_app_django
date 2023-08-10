@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from.decorators import unauthenticated_user,allowed_users
 from django.core.mail import send_mail
 from .models import User,Attendance
+from main.models import Category
 from .forms import CreateUserForm,NewUserForm
 from django.core import serializers
 
@@ -69,11 +70,22 @@ def registerView(request):
 @login_required(login_url='users/login')
 @allowed_users(allowed_roles=["admin",'staff'])
 def users_list_view(request):
+    categories = Category.objects.all()
     users = User.objects.all()
         
-    context = {"users":users,}
+    context = {
+        "categories":categories,
+        "users":users
+        }
 
     return render(request,'accounts/users_list.html',context)
+
+@login_required(login_url='login')
+def users_delete_view(request,pk): 
+    user = User.objects.get(id=pk)
+    user.delete()
+    return JsonResponse({"message": "Successful"})
+
 
 @login_required(login_url='users/login')
 @allowed_users(allowed_roles=["admin"])
@@ -115,7 +127,7 @@ def attendance_list_view(request):
 
 def users_search(request):
     name = request.GET.get("name", None)
-    print(name)
+    # print(name)
     
     results = User.objects.filter(first_name__icontains=name)
 
@@ -132,7 +144,7 @@ def users_search(request):
 
 def attendance_search(request):
     device = request.GET.get("device", None)
-    print(device)
+    # print(device)
     
     results = Attendance.objects.all()
 

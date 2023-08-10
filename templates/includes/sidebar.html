@@ -1,0 +1,113 @@
+{% load static %}
+
+
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px;">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+                <span class="fs-4">My Library</span>
+            </a>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="{% url 'main:home' %}" class="nav-link active" aria-current="page">
+                        <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="{% url 'main:home' %}"/></svg>
+                        Home
+                    </a>
+                </li>
+                <br/>
+                
+                <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#categories-collapse" 
+                    aria-expanded="false">
+                        <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"/></svg>
+                        Categories
+                    </button>
+                    <div class="collapse" id="categories-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            {% for category in categories %}
+                            <li class="nav-item">
+                                <a class="nav-link text-success" href="{% url 'main:category_list' %}?title={{category.title}}">{{ category.title }}</a>
+                            </li>
+                            {% endfor %}
+                            {% if request.user.user_type == "ADMIN" %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'main:category_new' %}">Add</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#productTypes-collapse" 
+                    aria-expanded="false">
+                        <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"/></svg>
+                        Product Types
+                    </button>
+                    <div class="collapse" id="productTypes-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'main:product_list' %}?type=BOOKS">Books</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'main:product_list' %}?type=FILES">Other Files</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'main:product_list' %}?type=LINKS">Links</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <li class="mb-1">
+                    <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#products-collapse" aria-expanded="false">
+                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
+                    All Products
+                </button>
+                <div class="collapse" id="products-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'main:product_list' %}">List</a>
+                        </li>
+                        {% if request.user.user_type == "ADMIN" %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'main:product_new' %}">Add</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </li>
+            <li>
+                <a href="{% url 'users:attendance_list'%}" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
+                    Attendance
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'users:user_list' %}" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
+                    Users
+                </a>
+            </li>
+        </ul>
+        <hr>
+        <div class="dropdown">
+            <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                <small>{{ request.user.email}}</small>
+            </a>
+            <ul class="dropdown-menu text-small shadow">
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'users:logout' %}">Log out</a></li>
+            </ul>
+        </div>
+    </div>
+
