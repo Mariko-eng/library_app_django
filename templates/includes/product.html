@@ -1,33 +1,33 @@
 {% load static %}
 
-             <div class="col">
-                 <div class="card shadow-sm">
-                    {% if product.product_type == 'FILES' %}    
-                    <div style="height:100%;width:100%;height:225px;" class = "d-flex justify-content-center align-items-center">
-                         <img src="{% static 'images/file_img.jpeg' %}" class="img-fluid rounded-start pr-1" alt="...">
-                     </div>
+          <!-- Card with an image on left -->
+          <div class="col-lg-4 col-md-6 col-sm-12">
+          <div class="card mb-3">
+            <div class="row g-0">
+              <div class="col-md-4">
+                    {% if product.product_type == 'FILES' %}
+                        <img src="{% static 'img/file_img.jpeg' %}" class="img-fluid rounded-start" alt="...">    
                     {% elif product.image %}
-                     <div style="height:100%;width:100%;height:225px;" class = "d-flex justify-content-center align-items-center">
-                         <img src="{{product.image.url}}" class="img-fluid rounded-start pr-1" alt="...">
-                     </div>
+                        <img src="{{product.image.url}}" class="img-fluid rounded-start" alt="...">    
                      {% else %}
-                     <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                        <img src="{% static 'img/link-2.jpeg' %}" class="img-fluid rounded-start" alt="...">    
                      {% endif %}
-                     
-                     <div class="card-body">
-                          <h6 class="card-title">{{ product.title|upper|truncatechars:15 }}</h6>
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{ product.title|upper|truncatechars:15 }}</h5>
+                  <p class="card-text">{{ product.description|capfirst|truncatechars:30 }}</p>
+                  <small class="text-body-secondary">{{ product.created_at|date:"SHORT_DATE_FORMAT" }}</small>
+                  <div class="card-footer d-flex justify-content-between align-items-center">
+                    <p class="card-text"><a href="{% url 'main:product_detail' product.id %}" class="btn btn-primary">View</a></p>
+                    {% if request.user.user_type == "ADMIN" %}
+                        <a  href="{% url 'main:product_edit' product.id %}" class="card-link">Edit Item</a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!-- End Card with an image on left -->
+        </div>
 
-                         <p class="card-text">{{ product.description|capfirst|truncatechars:30 }}</p>
-                         <div class="d-flex justify-content-between align-items-center">
-                             <div class="btn-group">
-                                <a class="btn btn-primary" href="{% url 'main:product_detail' product.id %}" role="button">View</a>
-                                 {% if request.user.user_type == "ADMIN" %}
-                                 <a class="btn btn-sm btn-outline-secondary" href="{% url 'main:product_edit' product.id %}" role="button">Edit</a>
-                                 {% endif %}
-                             </div>
-                             <small class="text-body-secondary">{{ product.created_at|date:"SHORT_DATE_FORMAT" }}
-                             </small>
-                         </div>
-                     </div>
-                 </div>
-             </div>   
+ 

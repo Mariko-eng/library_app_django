@@ -1,5 +1,4 @@
-
-{%extends 'base/main/base.html' %}
+{%extends 'base/main/base_new.html' %}
 {% load static %}
 
 
@@ -9,18 +8,20 @@
 </title>
 {% endblock%}
 
+{% block pagetitle%}
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item">Products</li>
+          <li class="breadcrumb-item active">All</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+{% endblock %}
+
 {% block content %}
-
-<br/>
-<br/>
-
-<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-     <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item"><a href="{% url 'main:product_list' %}">Products</a></li>
-          <li class="breadcrumb-item active" aria-current="page">List</li>
-     </ol>
-</nav>
 
 {% if messages %}
     {% for message in messages %}
@@ -31,12 +32,9 @@
     {% endfor %}
 {% endif %}
 
-<div class="album py-3 bg-body-tertiary">
-     <div class="container">
-         <div class="album py-2">Latest Posts</div>
-         
+<div>
+     <div class="container">         
          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-             
              {% for product in products %}
                {% include "includes/product.html" with product=product %}
              {% endfor %}   

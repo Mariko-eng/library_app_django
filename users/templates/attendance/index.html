@@ -1,30 +1,24 @@
-{%extends 'base/main/base.html' %}
+{%extends 'base/main/base_new.html' %}
 
 {% block title %}
-<title>Users</title>
+<title>Attendance</title>
 {% endblock%} 
 
-{% block other_styles %}     
+
+{% block pagetitle%}
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active">Attendance</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
 {% endblock %}
 
 {% block content %}
-<br />
-<br />
 
-<nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="#">Home</a></li>
-    <li class="breadcrumb-item">
-      <a href="{% url 'users:user_list' %}">Attendance</a>
-    </li>
-    <li class="breadcrumb-item active" aria-current="page">
-      <a href="{% url 'users:attendance_list' %}">LIST</a>
-    </li>
-  </ol>
-</nav>
-
-<br />
-<br />
 {% if messages %} 
 {% for message in messages %}
   <div class="alert alert-success" role="alert">{{ message }}</div>
@@ -34,7 +28,7 @@
       <h2>Attendance</h2>
 
        <div class="table-responsive small">
-        <table id="bootstrapdatatable" class="table table-striped table-sm">
+        <table id="bootstrapdatatable" class="datatable table table-striped table-sm">
           <thead>
             <tr>
               <th scope="col">#</th>
@@ -62,7 +56,7 @@
             {% endfor %}
           </tbody>
         </table>
-      </div>è
+      </div>
 
 <br />
 

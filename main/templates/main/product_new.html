@@ -1,4 +1,4 @@
-{%extends 'base/main/base.html' %}
+{%extends 'base/main/base_new.html' %}
 {% load widget_tweaks %}
 
 
@@ -8,20 +8,20 @@
 </title>
 {% endblock%}
 
+{% block pagetitle%}
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item">Products</li>
+          <li class="breadcrumb-item active">New</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+{% endblock %}
+
 {% block content %}
-
-<br/>
-<br/>
-
-<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="#">Home</a></li>
-      <li class="breadcrumb-item"><a href="{% url 'main:product_list' %}">Products</a></li>
-      <li class="breadcrumb-item active" aria-current="page">New</li>
-    </ol>
-  </nav>
-
-<br/>
 
 <form id ="myForm" method="post" enctype="multipart/form-data">
     {% csrf_token %}

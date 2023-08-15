@@ -23,6 +23,8 @@ def index(request):
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
+        print(email)
+        print(password)
         user = authenticate(request,email=email,password=password)
 
         if user is not None:
@@ -32,9 +34,10 @@ def index(request):
                 return redirect(next_url)  # Redirect to the URL specified in 'next' parameter
             return redirect('main:home')
         else:
-            messages.info(request, "Username Or Paassword Is Incorrect")
+            messages.info(request, " Please Provide A Valid Username And Paassword")
 
-    return render(request,'accounts/login.html',context)
+    return render(request,'auth/login.html',context)
+    # return render(request,'accounts/login.html',context)
 
 def logoutView(request):
     logout(request)
@@ -65,7 +68,8 @@ def registerView(request):
         
     context = {'form': form}
 
-    return render(request,'accounts/register.html',context)
+    return render(request,'auth/register.html',context)
+    # return render(request,'accounts/register.html',context)
 
 @login_required(login_url='users/login')
 @allowed_users(allowed_roles=["admin",'staff'])
@@ -79,6 +83,20 @@ def users_list_view(request):
         }
 
     return render(request,'accounts/users_list.html',context)
+
+@login_required(login_url='users/login')
+def users_detail_view(request,pk):
+    categories = Category.objects.all()
+    user = User.objects.get(id=pk)
+    attendances = Attendance.objects.filter(user= user)
+        
+    context = {
+        "categories": categories,
+        "user": user,
+        "attendances": attendances
+        }
+
+    return render(request,'accounts/users_detail.html',context)
 
 @login_required(login_url='login')
 def users_delete_view(request,pk): 

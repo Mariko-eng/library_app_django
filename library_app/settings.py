@@ -145,10 +145,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,'bootstrap_assets'),
-    os.path.join(BASE_DIR,'custom_assets')
+    os.path.join(BASE_DIR,'assets'),
 ] # DIRECTORIES WHERE YOU PUT YOUR STATIC FILES
-STATIC_ROOT = os.path.join(BASE_DIR,'assets') # WHERE WE WANT DJANGO STORE ALL STATIC FILES by running cmd collectstatic
+STATIC_ROOT = os.path.join(BASE_DIR,'static') # WHERE WE WANT DJANGO STORE ALL STATIC FILES by running cmd collectstatic
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
