@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
-    'guardian', #Object level permissions
     'django_filters',
     'widget_tweaks',
 ]
@@ -215,7 +214,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 5
 }
 
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend', # default
-    'guardian.backends.ObjectPermissionBackend',
-)
+# AUTHENTICATION_BACKENDS = (
+#     'django.contrib.auth.backends.ModelBackend', # default
+#     'guardian.backends.ObjectPermissionBackend',
+# )
