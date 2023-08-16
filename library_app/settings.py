@@ -15,9 +15,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = [
-    "localhost", "127.0.0.1", '192.168.1.100', '.vercel.app'
-]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", '192.168.1.100', '.vercel.app']
 
 # python manage.py runserver 192.168.1.100:8000
 
