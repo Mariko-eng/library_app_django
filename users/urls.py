@@ -5,7 +5,7 @@ from . import views
 
 app_name = 'users'
 
-urlpatterns = [
+urlpatterns = [ 
     path('',views.index),
     path('users/login',views.index, name="login"),
     path('users/register',views.registerView, name="register"),
@@ -37,6 +37,9 @@ urlpatterns = [
      ### USERS
      path('users/attendance/list/',views.attendance_list_view,name="attendance_list"),
      path('users/attendance/list/search/',views.attendance_search,name="attendance_list_search"),
+
+     ### DEVICES
+     path('users/device/list/',views.device_list_view,name="device_list"),
 ]
 
 

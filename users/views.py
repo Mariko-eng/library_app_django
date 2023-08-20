@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from.decorators import unauthenticated_user,allowed_users
 from django.core.mail import send_mail
-from .models import User,Attendance
+from .models import User,Attendance,Device
 from main.models import Category
 from .forms import CreateUserForm,NewUserForm
 from django.core import serializers
@@ -142,6 +142,15 @@ def attendance_list_view(request):
     context = {"results":results}
 
     return render(request,'attendance/index.html',context)
+
+@login_required(login_url='users/login')
+@allowed_users(allowed_roles=["admin",'staff'])
+def device_list_view(request):
+    results = Device.objects.all()
+        
+    context = {"results":results}
+
+    return render(request,'device/index.html',context)
 
 def users_search(request):
     name = request.GET.get("name", None)

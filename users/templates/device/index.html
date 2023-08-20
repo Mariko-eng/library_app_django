@@ -1,7 +1,7 @@
 {%extends 'base/main/base_new.html' %}
 
 {% block title %}
-<title>Attendance</title>
+<title>Devices</title>
 {% endblock%} 
 
 
@@ -11,7 +11,7 @@
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item active">Attendance</li>
+          <li class="breadcrumb-item active">Devices</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -25,35 +25,21 @@
  {% endfor %} 
  {% endif %}
 
-      <h2>Attendance</h2>
+      <h2>Bluetooth Devices</h2>
 
        <div class="table-responsive small">
         <table id="bootstrapdatatable" class="datatable table table-striped table-sm">
           <thead>
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">Names</th>
-              <th scope="col">Email</th>
-              <th scope="col">Role</th>
-              <th scope="col">TYPE</th>
-              <th scope="col">Activity</th>
-              <th scope="col">Device Name</th>
-              <th scope="col">Device Addr</th>
-              <th scope="col">Created At</th>
+              <th scope="col">Address</th>
+              <th scope="col">Name</th>
             </tr>
           </thead>
           <tbody>
             {% for result in results %}
              <tr>
-              <td>{{result.id}}</td>
-              <td>{{result.user.name}}</td>
-              <td>{{result.user.email}}</td>
-              <td>{{result.user.user_type}}</td>
-              <td>{{result.attendance_type}}</td>
-              <td>{{result.activity}}</td>
-              <td>{{result.device.name}}</td>
-              <td>{{result.device.address}}</td>
-              <td>{{result.created_at}}</td>
+              <td>{{result.address}}</td>
+              <td>{{result.name}}</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -61,5 +47,7 @@
       </div>
 
 <br />
+
+<script>
 
 {% endblock%}
