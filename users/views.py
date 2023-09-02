@@ -9,8 +9,10 @@ from django.core.mail import send_mail
 from .models import User,Attendance,Device
 from main.models import Category
 from .forms import CreateUserForm,NewUserForm
-from django.core import serializers
 
+# custom 404 view
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)
 
 # @unauthenticated_user
 def index(request):
@@ -71,7 +73,7 @@ def registerView(request):
     return render(request,'auth/register.html',context)
     # return render(request,'accounts/register.html',context)
 
-@login_required(login_url='users/login')
+@login_required(login_url='/users/login')
 @allowed_users(allowed_roles=["admin",'staff'])
 def users_list_view(request):
     categories = Category.objects.all()
@@ -84,7 +86,7 @@ def users_list_view(request):
 
     return render(request,'accounts/users_list.html',context)
 
-@login_required(login_url='users/login')
+@login_required(login_url='/users/login')
 def users_detail_view(request,pk):
     categories = Category.objects.all()
     user = User.objects.get(id=pk)
@@ -98,14 +100,14 @@ def users_detail_view(request,pk):
 
     return render(request,'accounts/users_detail.html',context)
 
-@login_required(login_url='login')
+@login_required(login_url='/users/login')
 def users_delete_view(request,pk): 
     user = User.objects.get(id=pk)
     user.delete()
     return JsonResponse({"message": "Successful"})
 
 
-@login_required(login_url='users/login')
+@login_required(login_url='/users/login')
 @allowed_users(allowed_roles=["admin"])
 def users_new_view(request):
     form = NewUserForm()
@@ -134,7 +136,7 @@ def users_new_view(request):
     return render(request,'accounts/users_new.html',context)
 
 
-@login_required(login_url='users/login')
+@login_required(login_url='/users/login')
 @allowed_users(allowed_roles=["admin",'staff'])
 def attendance_list_view(request):
     results = Attendance.objects.all()
@@ -143,7 +145,7 @@ def attendance_list_view(request):
 
     return render(request,'attendance/index.html',context)
 
-@login_required(login_url='users/login')
+@login_required(login_url='/users/login')
 @allowed_users(allowed_roles=["admin",'staff'])
 def device_list_view(request):
     results = Device.objects.all()
@@ -169,6 +171,7 @@ def users_search(request):
         
     return JsonResponse({'results': results_data})
 
+@login_required(login_url='/users/login')
 def attendance_search(request):
     device = request.GET.get("device", None)
     # print(device)

@@ -13,7 +13,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-DEBUG = os.getenv("DEBUG")
+DEBUG = os.getenv("DEBUG", 'False').lower() == 'true'
+# DEBUG = False
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", '192.168.1.100', '.vercel.app']
 
@@ -36,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'main',
     'users',
+    'main',
 
     #third party
     'corsheaders',
@@ -69,6 +70,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [TEMPLATES],
+        # 'DIRS': [os.path.join(BASE_DIR, 'templates')],  # Specify the correct directory here
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -216,3 +218,4 @@ REST_FRAMEWORK = {
 #     'django.contrib.auth.backends.ModelBackend', # default
 #     'guardian.backends.ObjectPermissionBackend',
 # )
+

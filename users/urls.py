@@ -1,7 +1,6 @@
 from django.urls import path
-from django.contrib.auth import views as auth_views
-
 from . import views 
+
 
 app_name = 'users'
 
@@ -12,20 +11,6 @@ urlpatterns = [
     path('users/logout',views.logoutView, name="logout"),
 
     path('users/sm',views.send_mail_now),
-
-    path('users/reset_password/', 
-         auth_views.PasswordResetView.as_view(
-            template_name ="accounts/password_reset.html"
-             ),name="reset_password"), # Submit Email Form
-    path('users/reset_password/done/', 
-         auth_views.PasswordResetDoneView.as_view(
-             template_name ="accounts/password_reset_send.html"),name="password_reset_done"), # Email Sent Success Message
-    path('users/reset_password/<uidb64>/<token>/', 
-         auth_views.PasswordResetConfirmView.as_view(template_name ="accounts/password_reset_form.html"),
-         name="password_reset_confirm"), # Link to Password Reset ConfirmmView
-    path('users/reset_password/complete/',
-         auth_views.PasswordResetCompleteView.as_view(template_name ="accounts/password_reset_done.html"),name="password_reset_complete"), # Password Successfully Changed Message
-     
 
      ### USERS
      path('users/list/',views.users_list_view,name="user_list"),

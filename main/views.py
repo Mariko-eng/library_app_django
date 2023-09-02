@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
-@login_required(login_url='login')
+@login_required(login_url='/users/login')
 # @allowed_users(allowed_roles=["student"])
 def index(request):
     categories = Category.objects.all()
@@ -18,7 +18,7 @@ def index(request):
 
     return render(request,'main/index.html',context)
 
-@login_required(login_url='login')
+@login_required(login_url='/users/login')
 def category_list_view(request):
     categories = Category.objects.all()
 
@@ -44,7 +44,7 @@ def category_list_view(request):
 
     return render(request,'main/category_list.html',context)
 
-@login_required(login_url='login')
+@login_required(login_url='/users/login')
 def category_create_view(request):
     categories = Category.objects.all()
     form = CategoryForm()
@@ -66,7 +66,7 @@ def category_create_view(request):
 
     return render(request,'main/category_new.html',context)
 
-@login_required(login_url='login')
+@login_required(login_url='/users/login')
 def product_create_view(request):
     categories = Category.objects.all()
     form = ProductForm()
@@ -91,7 +91,7 @@ def product_create_view(request):
 
     return render(request,'main/product_new.html',context)
 
-@login_required(login_url='login')
+@login_required(login_url='/users/login')
 def product_list_view(request): 
     categories = Category.objects.all()
     type = request.GET.get('type',None)
@@ -127,7 +127,7 @@ def product_list_view(request):
 
     return render(request,'main/product_list.html',context)
 
-@login_required(login_url='login')
+@login_required(login_url='/users/login')
 def product_detail_view(request,pk): 
     categories = Category.objects.all()   
     product = Product.objects.get(id=pk)
@@ -138,7 +138,7 @@ def product_detail_view(request,pk):
 
     return render(request,'main/product_detail.html',context)
 
-@login_required(login_url='login')
+@login_required(login_url='/users/login')
 def product_edit_view(request,pk): 
     categories = Category.objects.all()   
     product = Product.objects.get(id=pk)
@@ -165,7 +165,7 @@ def product_edit_view(request,pk):
 
     return render(request,'main/product_edit.html',context)
 
-@login_required(login_url='login')
+@login_required(login_url='/users/login')
 def product_delete_view(request,pk): 
     product = Product.objects.get(id=pk)
     product.delete()
