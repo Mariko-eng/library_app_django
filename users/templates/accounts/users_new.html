@@ -7,23 +7,6 @@
 
 {% block content %}
 
-<br/>
-<br/> 
-
-<nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="#">Home</a></li>
-    <li class="breadcrumb-item">
-      <a href="{% url 'users:user_list' %}">Users</a>
-    </li>
-    <li class="breadcrumb-item active" aria-current="page">List</li>
-    <li class="breadcrumb-item">
-      <a href="{% url 'users:user_new' %}">NEW</a>
-    </li>
-  </ol>
-</nav>
-
-<br/>
 
 <form id ="myForm" method="post" enctype="multipart/form-data">
     {% csrf_token %}
