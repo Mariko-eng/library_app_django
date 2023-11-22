@@ -10,9 +10,6 @@ urlpatterns = [
     path('', include('users.urls')),
     path('', include('main.urls')),
     path('api/', include('users.urls_api')),
-    #     path('users/reset_password/', 
-#           auth_views.PasswordResetView.as_view(
-#               template_name="accounts/password_reset.html"), name="reset_password"),
 
     path('reset_password/', 
           auth_views.PasswordResetView.as_view(template_name="accounts/password_reset.html"), name="reset_password"),
